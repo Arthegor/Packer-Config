@@ -1,0 +1,65 @@
+{
+  "builders": [
+    {
+      "CPUs": "{{user `vm-cpu-num`}}",
+      "RAM": "{{user `vm-mem-size`}}",
+      "RAM_reserve_all": false,
+      "communicator": "winrm",
+      "convert_to_template": "true",
+      "datacenter": "{{user `vsphere-datacenter`}}",
+      "datastore": "{{user `vsphere-datastore`}}",
+      "firmware": "efi",
+      "floppy_files": [
+        "autounattend.xml"
+      ],
+      "folder": "{{user `vsphere-folder`}}",
+      "guest_os_type": "windows9Server64Guest",
+      "host": "{{user `vsphere-host`}}",
+      "insecure_connection": "true",
+      "iso_paths": [
+        "{{user `os_iso_path`}}",
+        "[] /vmimages/tools-isoimages/windows.iso"
+      ],
+      "network_adapters": [
+        {
+          "network": "{{user `vsphere-network`}}"
+        },
+        {
+          "network": "VM Network",
+          "network_card": "vmxnet3"
+        }
+      ],
+      "password": "{{user `vsphere-password`}}",
+      "shutdown_command": "shutdown /s /t 5",
+      "storage": [
+        {
+          "disk_size": "{{user `vm-disk-size`}}",
+          "disk_thin_provisioned": "true"
+        }
+      ],
+      "type": "vsphere-iso",
+      "username": "{{user `vsphere-user`}}",
+      "vcenter_server": "{{user `vsphere-server`}}",
+      "vm_name": "{{user `vm-name`}}",
+      "winrm_password": "{{user `winadmin-password`}}",
+      "winrm_timeout": "1h30m",
+      "winrm_username": "YOUR_WIN_USERNAME"
+    }
+  ],
+  "variables": {
+    "os_iso_path": "YOUR_ISO_TEMPLATES",
+    "vm-cpu-num": "4",
+    "vm-disk-size": "40960",
+    "vm-mem-size": "4096",
+    "vm-name": "Windows_Server_2019_core",
+    "vsphere-datastore": "YOUR_DATASTORE",
+    "vsphere-folder": "YOUR_FOLDER",
+    "vsphere-host": "YOUR_HOST",
+    "vsphere-network": "VM Network",
+    "vsphere-password": "YOUR_PASSWORD",
+    "vsphere-server": "YOUR_IP",
+    "vsphere-user": "YOUR_USER",
+    "winadmin-password": "YOUR_WIN_PASSWORD"
+  }
+}
+

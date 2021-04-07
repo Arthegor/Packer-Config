@@ -1,0 +1,43 @@
+{	
+	"builders": [
+		{
+			"type": "vsphere-iso",
+			"vcenter_server": "YOUR_IP",
+			"username": "YOUR_USERNAME",
+			"password": "YOUR_PASSWORD",
+			"host": "YOUR_IP_HOST",
+			"datastore": "YOUR_DATASTORE",
+			"folder": "YOUR_FOLDER",
+			"insecure_connection": "true",
+			"boot_command": [
+				"<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/kickstart.cfg<enter><wait>"
+			],
+			"http_directory": "YOUR_DIRECTORY_KICKSTART",
+			"vm_name": "RHEL",
+			"CPUs": "4",
+			"RAM": "4096",
+			"RAM_reserve_all": "false",
+			"guest_os_type": "rhel8_64Guest",
+			"convert_to_template": "true",
+			"disk_controller_type": "pvscsi",
+			"iso_paths": [
+				"YOUR_ISO_PATH"
+			],
+
+			"network_adapters": [
+				{
+					"network": "VM Network",
+					"network_card": "vmxnet3"
+				}
+			],
+			"storage": [
+				{
+					"disk_size": "25000",
+					"disk_thin_provisioned": "true"
+				}
+			],
+			"ssh_username": "YOUR_SSH_USERNAME",
+			"ssh_password": "YOUR_SSH_PASSWORD"
+		}
+	]
+}
