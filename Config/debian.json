@@ -1,43 +1,64 @@
-{       
-        "builders": [
-                {
-                        "type": "vsphere-iso",
-                        "vcenter_server": "YOUR_SERVER",
-                        "username": "YOUR_USERNAME",
-                        "password": "YOUR_PASSWORD",
-                        "host": "YOUR_HOST",
-                        "datastore": "YOUR_PATH",
-                        "folder": "YOUR_FOLDER",
-                        "insecure_connection": "true",
-                        "boot_command": [
-                                "<esc>auto preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<enter>"
-                        ],
-                        "http_directory": "YOUR_DIRECTORY_KICKSTART",
-                        "vm_name": "Debian_10",
-                        "CPUs": "2",
-                        "RAM": "2048",
-                        "RAM_reserve_all": "false",
-                        "guest_os_type": "debian10_64Guest",
-                        "convert_to_template": "true",
-                        "disk_controller_type": "pvscsi",
-                        "iso_paths": [
-                                "YOUR_ISO_PATH"
-                        ],
-
-                        "network_adapters": [
-                                {
-                                        "network": "VM Network",
-                                        "network_card": "vmxnet3"
-                                }
-                        ],
-                        "storage": [
-                                {
-                                        "disk_size": "12000",
-                                        "disk_thin_provisioned": "true"
-                                }
-                        ],
-                        "ssh_username": "YOUR_SSH_USERNAME",
-                        "ssh_password": "YOUR_SSH_PASSWORD"
-                }
-        ]
+{      
+  "builders": [
+ {
+ "type": "vsphere-iso",
+ "vcenter_server": "{{user `vsphere-server`}}",
+ "username": "{{user `vsphere-user`}}",
+ "password": "{{user `vsphere-pwd`}}",
+ "host": "{{user `vsphere-host`}}",
+ "datastore": "{{user `vsphere-datastore`}}",
+ "folder":  "{{user `vsphere-folder`}}",
+ "insecure_connection": "true",
+ "boot_command": [
+         "<esc>auto preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<enter>"
+ ],
+ "http_directory": "{{user `http-dir`}}",
+ "vm_name": "{{user `vm-name`}}",
+ "CPUs": "{{user `vm-cpu-num`}}",
+ "RAM": "{{user `vm-mem-size`}}",
+ "RAM_reserve_all": "false",
+ "guest_os_type": "debian10_64Guest",
+ "convert_to_template": "true",
+ "disk_controller_type": "pvscsi",
+ "content_library_destination" : {
+         "library": "main",
+         "name": "Debian_10",
+         "ovf": true
+ },
+ "iso_paths": [
+         "{{user `os_iso_path`}}"
+ ],
+ "network_adapters": [
+         {
+          "network": "{{user `vm-net`}}",
+          "network_card": "vmxnet3"
+         }
+ ],
+ "storage": [
+         {
+         "disk_size": "{{user `vm-disk-size`}}",
+         "disk_thin_provisioned": "true"
+ }
+ ],
+ "ssh_username": "{{user `ssh-user`}}",
+ "ssh_password": "{{user `ssh-pwd`}}"
+ }
+        ],
+ "variables": {
+ "vm-net": "YOUR_VM_NETWORK",
+ "os_iso_path": "YOUR_ISO_PATH",
+ "vm-cpu-num": "2",
+ "vm-disk-size": "16000",
+ "vm-mem-size": "2048",
+ "vm-name": "Debian10",
+ "vsphere-datastore": "YOUR_DATASTORE",
+ "vsphere-folder": "YOUR_FOLDER",
+ "vsphere-host": "YOUR_ESXI_VSPHERE",
+ "vsphere-pwd": "YOUR_PWD",
+ "vsphere-server": "YOUR_VSPHERE",
+ "vsphere-user": "YOUR_USER",
+ "http-dir": "Packer-File",
+ "ssh-user": "YOUR_USER",
+ "ssh-pwd": "YOUR_PWD"
+      }
 }
