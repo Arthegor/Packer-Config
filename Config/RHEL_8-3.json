@@ -1,43 +1,64 @@
-{	
+{
+    "variables": {
+        "vm-net": "YOUR_NETWORK",
+        "os_iso_path": "YOUR_ISO_PATH",
+        "vm-cpu-num": "2",
+        "library": "YOUR_LIBRARY",
+        "vm-disk-size": "16000",
+        "vm-mem-size": "2048",
+        "vm-name": "YOUR_VM_NAME",
+        "vsphere-datastore": "YOUR_DATASTORE",
+        "vsphere-host": "YOUR_HOST",
+        "vsphere-pwd": "YOUR_PASSWORD",
+        "vsphere-server": "YOUR_VSPHERE_SERVER",
+        "vsphere-user": "YOUR_VSPHERE_USER",
+        "http-dir": "YOUR_HTTP_DIR",
+        "ssh-user": "YOUR_SSH_USER",
+        "ssh-pwd": "YOUR_SSH_PASSWORD"
+             },
 	"builders": [
 		{
 			"type": "vsphere-iso",
-			"vcenter_server": "YOUR_IP",
-			"username": "YOUR_USERNAME",
-			"password": "YOUR_PASSWORD",
-			"host": "YOUR_IP_HOST",
-			"datastore": "YOUR_DATASTORE",
-			"folder": "YOUR_FOLDER",
+			"vcenter_server": "{{user `vsphere-server`}}",
+			"username": "{{user `vsphere-user`}}",
+			"password": "{{user `vsphere-pwd`}}",
+			"host": "{{user `vsphere-host`}}",
+			"datastore": "{{user `vsphere-datastore`}}",
 			"insecure_connection": "true",
 			"boot_command": [
 				"<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/kickstart.cfg<enter><wait>"
 			],
-			"http_directory": "YOUR_DIRECTORY_KICKSTART",
-			"vm_name": "RHEL",
-			"CPUs": "4",
-			"RAM": "4096",
+			"http_directory": "{{user `http-dir`}}",
+			"vm_name": "{{user `vm-name`}}",
+			"CPUs": "{{user `vm-cpu-num`}}",
+			"RAM": "{{user `vm-mem-size`}}",
 			"RAM_reserve_all": "false",
 			"guest_os_type": "rhel8_64Guest",
-			"convert_to_template": "true",
+			"convert_to_template": "false",
+            "content_library_destination" : {
+                "library": "{{user `library`}}",
+                "name": "{{user `vm-name`}}",
+                "ovf": true
+            },
 			"disk_controller_type": "pvscsi",
 			"iso_paths": [
-				"YOUR_ISO_PATH"
+				"{{user `os_iso_path`}}"
 			],
 
 			"network_adapters": [
 				{
-					"network": "VM Network",
+					"network": "{{user `vm-net`}}",
 					"network_card": "vmxnet3"
 				}
 			],
 			"storage": [
 				{
-					"disk_size": "25000",
+					"disk_size": "{{user `vm-disk-size`}}",
 					"disk_thin_provisioned": "true"
 				}
 			],
-			"ssh_username": "YOUR_SSH_USERNAME",
-			"ssh_password": "YOUR_SSH_PASSWORD"
+			"ssh_username": "{{user `ssh-user`}}",
+			"ssh_password": "{{user `ssh-pwd`}}"
 		}
-	]
+    ]
 }
